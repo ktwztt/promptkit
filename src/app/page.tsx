@@ -1,65 +1,85 @@
-import Image from "next/image";
+import Link from "next/link"
+import { Button, buttonVariants } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Wand2, Sparkles, Languages, Hash, Library, Scissors, GitCompare, Zap, AlignLeft } from "lucide-react"
 
-export default function Home() {
+const FEATURES = [
+  { icon: Wand2, title: "Prompt Cleaner", desc: "Remove markdown, HTML, emoji, and normalize formatting with one click.", href: "/tools/cleaner" },
+  { icon: Sparkles, title: "Prompt Optimizer", desc: "Auto-optimize prompts for ChatGPT, Claude, Gemini, Grok, DeepSeek.", href: "/tools/optimizer" },
+  { icon: Languages, title: "Prompt Translator", desc: "Translate prompts while preserving logic — not literal translation.", href: "/tools/translator" },
+  { icon: Hash, title: "Token Counter", desc: "Count tokens, estimate API costs, and check context limits.", href: "/tools/token-counter" },
+  { icon: Scissors, title: "Prompt Splitter", desc: "Split long prompts by token count while keeping context.", href: "/tools/splitter" },
+  { icon: GitCompare, title: "Prompt Diff", desc: "Compare two prompts with highlighted additions and deletions.", href: "/tools/diff" },
+  { icon: AlignLeft, title: "Prompt Formatter", desc: "Standardize headings, lists, code blocks, tables, and spacing.", href: "/tools/formatter" },
+  { icon: Library, title: "Prompt Library", desc: "Save, organize, tag, favorite, and version your prompts.", href: "/library" },
+  { icon: Zap, title: "AI Generator", desc: "Describe what you need — get a complete, optimized prompt.", href: "/tools/generator" },
+]
+
+export default function LandingPage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex flex-col">
+      {/* Hero */}
+      <section className="container max-w-5xl mx-auto px-4 py-24 md:py-32 text-center">
+        <Badge variant="secondary" className="mb-6 text-sm px-4 py-1">🚀 Now in Public Beta</Badge>
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+          Your AI Prompt{" "}
+          <span className="text-primary">Workspace</span>
+        </h1>
+        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
+          Clean, optimize, translate, and manage prompts for every AI model.
+          Stop wrestling with formatting — focus on what you want to build.
+        </p>
+        <div className="flex items-center gap-4 justify-center flex-wrap">
+          <Link href="/tools/cleaner" className={buttonVariants({ size: "lg" })}>Start for Free</Link>
+          <Link href="/tools/token-counter" className={buttonVariants({ size: "lg", variant: "outline" })}>Try Token Counter</Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Features Grid */}
+      <section className="container max-w-5xl mx-auto px-4 py-16">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">
+          Everything you need for prompt engineering
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {FEATURES.map(({ icon: Icon, title, desc, href }) => (
+            <Card key={title} className="hover:border-primary/50 transition-colors">
+              <Link href={href}>
+                <CardHeader>
+                  <Icon className="h-8 w-8 text-primary mb-2" />
+                  <CardTitle className="text-lg">{title}</CardTitle>
+                  <CardDescription>{desc}</CardDescription>
+                </CardHeader>
+              </Link>
+            </Card>
+          ))}
         </div>
-      </main>
+      </section>
+
+      {/* CTA */}
+      <section className="container max-w-3xl mx-auto px-4 py-16 text-center">
+        <h2 className="text-2xl md:text-3xl font-bold mb-4">
+          Ready to level up your prompts?
+        </h2>
+        <p className="text-muted-foreground mb-8">
+          Free to start. No credit card required. Works with every AI model.
+        </p>
+        <Link href="/tools/cleaner" className={buttonVariants({ size: "lg" })}>Get Started — It&apos;s Free</Link>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t py-8 text-center text-sm text-muted-foreground">
+        <div className="container flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4" />
+            PromptKit
+          </div>
+          <div className="flex items-center gap-4">
+            <Link href="/tools/cleaner" className="hover:text-foreground">Tools</Link>
+            <Link href="/library" className="hover:text-foreground">Library</Link>
+          </div>
+        </div>
+      </footer>
     </div>
-  );
+  )
 }
