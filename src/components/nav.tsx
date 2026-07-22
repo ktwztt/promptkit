@@ -9,7 +9,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { cn } from "@/lib/utils"
 import {
   Wand2, Sparkles, Languages, Hash, Library, Menu, X, LogIn, LogOut,
-  Scissors, GitCompare, AlignLeft, Zap, LayoutDashboard, BookTemplate, CreditCard,
+  Scissors, GitCompare, AlignLeft, Zap, LayoutDashboard, BookTemplate, CreditCard, Settings, Users,
 } from "lucide-react"
 import { useState } from "react"
 
@@ -80,8 +80,14 @@ export function Nav() {
           {!isPending && (
             <>
               {session ? (
-                <div className="hidden md:flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">{session.name}</span>
+                <div className="hidden md:flex items-center gap-1">
+                  <Link href="/teams" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+                    <Users className="h-4 w-4" />
+                  </Link>
+                  <Link href="/settings" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+                    <Settings className="h-4 w-4" />
+                  </Link>
+                  <span className="text-sm text-muted-foreground ml-1">{session.name}</span>
                   <Button variant="ghost" size="sm" onClick={() => authClient.signOut()}>
                     <LogOut className="h-4 w-4" />
                   </Button>
@@ -134,6 +140,18 @@ export function Nav() {
           <NavLink
             href="/pricing" label="Pricing" icon={CreditCard}
             active={pathname.startsWith("/pricing")}
+            className="justify-start"
+            onClick={() => setOpen(false)}
+          />
+          <NavLink
+            href="/teams" label="Teams" icon={Users}
+            active={pathname.startsWith("/teams")}
+            className="justify-start"
+            onClick={() => setOpen(false)}
+          />
+          <NavLink
+            href="/settings" label="Settings" icon={Settings}
+            active={pathname.startsWith("/settings")}
             className="justify-start"
             onClick={() => setOpen(false)}
           />

@@ -53,7 +53,15 @@ export async function PUT(req: NextRequest) {
   if (tags !== undefined) data.tags = tags
   if (isFavorite !== undefined) data.isFavorite = isFavorite
   if (folderId !== undefined) data.folderId = folderId
-  data.version = existing.version + 1
+  const newVersion = existing.version + 1
+  data.version = newVersion
+
+  // Save version history if content changed
+  if (content !== undefined && content !== existing.content) {
+    await db.promptVersion.create({
+      data: { promptId: id, version: existing.version, content: existing.content },
+    })
+  }
 
   const updated = await db.prompt.update({ where: { id }, data })
   return NextResponse.json(updated)
