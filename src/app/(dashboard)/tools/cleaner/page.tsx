@@ -8,8 +8,9 @@ import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { cleanPrompt, getCleaningDiff, type CleanOptions } from "@/lib/prompt-cleaner"
 import { countTokens } from "@/lib/token-counter"
-import { Copy, Eraser, RotateCcw, Check } from "lucide-react"
+import { Copy, Eraser, RotateCcw, Check, FolderOpen, Download } from "lucide-react"
 import { toast } from "sonner"
+import { getElectronAPI } from "@/lib/electron"
 
 const OPTIONS: { key: keyof CleanOptions; label: string }[] = [
   { key: "removeMarkdown", label: "Remove Markdown" },
@@ -49,6 +50,27 @@ export default function CleanerPage() {
     setInput("")
     setOutput("")
   }
+
+  const handleImport = async () => {
+    const api = getElectronAPI()
+    if (api) {
+      const file = await api.openFile()
+      if (file) {
+        setInput(file.content)
+        toast.success(`Loaded ${file.path.split(/[\\/]/).pop()}`)
+      }
+    }
+  }
+
+  const handleExport = async () => {
+    const api = getElectronAPI()
+    if (api) {
+      await api.saveFile(output, "cleaned-prompt.txt")
+      toast.success("File saved")
+    }
+  }
+
+  const isDesktop = typeof window !== "undefined" && !!window.electronAPI
 
   const diff = output ? getCleaningDiff(input, output) : null
   const inTokens = input ? countTokens(input) : null
@@ -124,7 +146,7 @@ export default function CleanerPage() {
         </CardContent>
       </Card>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         <Button onClick={handleClean} disabled={!input}>
           <Eraser className="h-4 w-4" /> Clean Prompt
         </Button>
@@ -132,6 +154,16 @@ export default function CleanerPage() {
           {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
           {copied ? "Copied" : "Copy"}
         </Button>
+        {isDesktop && (
+          <>
+            <Button variant="outline" onClick={handleImport}>
+              <FolderOpen className="h-4 w-4" /> Import File
+            </Button>
+            <Button variant="outline" onClick={handleExport} disabled={!output}>
+              <Download className="h-4 w-4" /> Export File
+            </Button>
+          </>
+        )}
         <Button variant="ghost" onClick={handleClear}>
           <RotateCcw className="h-4 w-4" /> Clear
         </Button>
