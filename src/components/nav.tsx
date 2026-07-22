@@ -9,11 +9,12 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { cn } from "@/lib/utils"
 import {
   Wand2, Sparkles, Languages, Hash, Library, Menu, X, LogIn, LogOut,
-  Scissors, GitCompare, AlignLeft, Zap,
+  Scissors, GitCompare, AlignLeft, Zap, LayoutDashboard, BookTemplate, CreditCard,
 } from "lucide-react"
 import { useState } from "react"
 
 const TOOLS = [
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/tools/cleaner", label: "Cleaner", icon: Wand2 },
   { href: "/tools/optimizer", label: "Optimizer", icon: Sparkles },
   { href: "/tools/translator", label: "Translator", icon: Languages },
@@ -60,6 +61,10 @@ export function Nav() {
               <NavLink key={t.href} {...t} active={pathname.startsWith(t.href)} />
             ))}
             <NavLink
+              href="/templates" label="Templates" icon={BookTemplate}
+              active={pathname.startsWith("/templates")}
+            />
+            <NavLink
               href="/library" label="Library" icon={Library}
               active={pathname.startsWith("/library")}
             />
@@ -67,6 +72,10 @@ export function Nav() {
         </div>
 
         <div className="flex items-center gap-2">
+          <Link href="/pricing" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "hidden md:inline-flex")}>
+            <CreditCard className="h-4 w-4" />
+            Pricing
+          </Link>
           <ThemeToggle />
           {!isPending && (
             <>
@@ -111,8 +120,20 @@ export function Nav() {
             />
           ))}
           <NavLink
+            href="/templates" label="Templates" icon={BookTemplate}
+            active={pathname.startsWith("/templates")}
+            className="justify-start"
+            onClick={() => setOpen(false)}
+          />
+          <NavLink
             href="/library" label="Library" icon={Library}
             active={pathname.startsWith("/library")}
+            className="justify-start"
+            onClick={() => setOpen(false)}
+          />
+          <NavLink
+            href="/pricing" label="Pricing" icon={CreditCard}
+            active={pathname.startsWith("/pricing")}
             className="justify-start"
             onClick={() => setOpen(false)}
           />
