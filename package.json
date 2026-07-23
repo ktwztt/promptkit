@@ -1,6 +1,8 @@
 {
   "name": "promptkit",
   "version": "0.1.0",
+  "description": "AI Prompt Workspace — clean, optimize, translate, and manage prompts for every AI model.",
+  "author": "PromptKit",
   "private": true,
   "main": "electron/main.mjs",
   "scripts": {
